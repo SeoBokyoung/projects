@@ -1,3 +1,4 @@
+<%@page import="kr.co.jboard1.config.DBConfig"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
@@ -17,11 +18,6 @@
 	String addr2 = request.getParameter("addr2");
 	String regip = request.getRemoteAddr();
 	
-	//DB 접속 정보
-	final String HOST = "jdbc:mysql://192.168.0.178:3306/sbk";
-	final String USER = "sbk";
-	final String PASS = "1234";
-		
 	Connection conn 	   = null;
 	PreparedStatement psmt = null;
 	
@@ -29,32 +25,28 @@
 		   sql += " (uid, pass, name, nick, email, hp, zip, addr1, addr2, regip, rdate)";	
 		   sql += " VALUES (?,?,?,?,?,?,?,?,?,?,NOW())";
 
-		// 1단계
-		Class.forName("com.mysql.jdbc.Driver");
+	conn = DBConfig.getConnect();
 
-		// 2단계
-		conn = DriverManager.getConnection(HOST, USER, PASS);
+	//3단계
+	psmt = conn.prepareStatement(sql);
+	psmt.setString(1, uid);
+	psmt.setString(2, pw);
+	psmt.setString(3, name);
+	psmt.setString(4, nick);
+	psmt.setString(5, email);
+	psmt.setString(6, hp);
+	psmt.setString(7, zip);
+	psmt.setString(8, addr1);
+	psmt.setString(9, addr2);
+	psmt.setString(10, regip);
 
-		//3단계
-		psmt = conn.prepareStatement(sql);
-		psmt.setString(1, uid);
-		psmt.setString(2, pw);
-		psmt.setString(3, name);
-		psmt.setString(4, nick);
-		psmt.setString(5, email);
-		psmt.setString(6, hp);
-		psmt.setString(7, zip);
-		psmt.setString(8, addr1);
-		psmt.setString(9, addr2);
-		psmt.setString(10, regip);
+	// 4단계
+	psmt.executeUpdate();
 
-		// 4단계
-		psmt.executeUpdate();
-
-		// 5단계
-		// 6단계
-		psmt.close();
-		conn.close();
+	// 5단계
+	// 6단계
+	psmt.close();
+	conn.close();
 
 	// 로그인페이지 이동
 	response.sendRedirect("/jboard1/login.jsp?reg=success");
