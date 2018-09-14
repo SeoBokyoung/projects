@@ -198,7 +198,7 @@ public class BoardDAO {
 
 	// ±€ªË¡¶
 	public void delete(String seq) throws Exception {
-		BoardVO vo = null;
+		
 		Connection conn = DBConfig.getConnect();
 	
 		PreparedStatement psmt = conn.prepareStatement(SQL.BOARD_DELETE);
