@@ -21,8 +21,7 @@ public class BoardDAO {
 	}
 	
 	// BoardDAO 객체 생성을 금지하기 위한 private 생성자
-	private BoardDAO() {
-	}
+	private BoardDAO() {}
 
 	// 전체 글갯수
 	public int getTotalCount() throws Exception {
@@ -194,8 +193,24 @@ public class BoardDAO {
 
 	// 글수정
 	public void modify() {
+	
 	}
 
+	// 글삭제
+	public void delete(String seq) throws Exception {
+		BoardVO vo = null;
+		Connection conn = DBConfig.getConnect();
+	
+		PreparedStatement psmt = conn.prepareStatement(SQL.BOARD_DELETE);
+		psmt.setString(1, seq);
+		
+		psmt.executeUpdate();
+		
+		psmt.close();
+		conn.close();
+		
+	}
+	
 	// 댓글쓰기
 	public void commentWrite() {
 	}

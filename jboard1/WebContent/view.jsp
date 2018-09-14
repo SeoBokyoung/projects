@@ -45,9 +45,9 @@
 						</tr>
 					</table>
 					<div class="btns">
-						<a href="#" class="cancel del">삭제</a>
-						<a href="#" class="cancel mod">수정</a>
-						<a href="#" class="cancel">목록</a>
+						<a href="./proc/delete.jsp?seq=<%= vo.getSeq() %>" class="cancel del">삭제</a>
+						<a href="./modify.jsp?seq=<%= vo.getSeq() %>" class="cancel mod">수정</a>
+						<a href="javascript:history.go(-1)" class="cancel">목록</a>
 					</div>
 				</form>
 			</div><!-- view 끝 -->
