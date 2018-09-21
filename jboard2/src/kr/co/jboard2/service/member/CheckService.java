@@ -11,18 +11,19 @@ public class CheckService implements CommandAction{
 	@Override
 	public String requestProc(HttpServletRequest request, HttpServletResponse response) {
 
-		String uid = request.getParameter("uid");
+		String check = request.getParameter("check");
+		String value = request.getParameter("value");
 		
 		MemberDAO dao = MemberDAO.getInstance();
 		int result = 0;
 		
 		try {
-			result = dao.checkUser(uid);
+			result = dao.checkUser(check, value);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		String json = "{'result':'"+result+"'}";
+		String json = "{\"result\":"+result+"}";
 		return "json:"+json;
 	}
 }

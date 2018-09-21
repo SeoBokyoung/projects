@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,29 +15,31 @@
 					<table>
 						<tr>
 							<td>제목</td>
-							<td><input type="text" name="subject" value="테스트 제목 입니다." readonly />
+							<td>
+								<input type="text" name="subject" value="${ vo.title }" readonly />
 							</td>
 						</tr>
 						
-						<tr>
+						<c:if test="${ vo.file > 0 }">
+				 		<tr>
 							<td>첨부파일</td>
 							<td>
 								<a href="#">테스트.hwp</a>
 								<span>3회 다운로드</span>
 							</td>
-						</tr>
-						
+						</tr> 
+						</c:if>
 						<tr>
 							<td>내용</td>
 							<td>
-								<textarea name="content" rows="20" readonly>테스트 내용 입니다.</textarea>
+								<textarea name="content" rows="20" readonly>${ vo.content }</textarea>
 							</td>
 						</tr>
 					</table>
 					<div class="btns">
 						<a href="#" class="cancel del">삭제</a>
 						<a href="#" class="cancel mod">수정</a>
-						<a href="#" class="cancel">목록</a>
+						<a href="/jboard2/list.do?pg=${ pg }" class="cancel">목록</a>
 					</div>
 				</form>
 			</div><!-- view 끝 -->
@@ -67,7 +70,11 @@
 			<section class="comment_write">
 				<h3>댓글쓰기</h3>
 				<div>
-					<form action="#" method="post">
+					<form action="/jboard2/comment.do" method="post">
+						<input type="hidden" name="pg" value="${ pg }" />
+						<input type="hidden" name="parent" value="${ vo.seq }" />
+						<input type="hidden" name="cate" value="${ vo.cate }" />
+						<input type="hidden" name="uid" value="${ member.uid }" />
 						<textarea name="comment" rows="5"></textarea>
 						<div class="btns">
 							<a href="#" class="cancel">취소</a>

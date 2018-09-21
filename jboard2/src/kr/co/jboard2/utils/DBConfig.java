@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class DBConfig {
 
 	// DBÁ¤º¸
-	private static final String HOST = "jdbc:mysql://192.168.0.178:3306/sbk";
+	private static final String HOST = "jdbc:mysql://192.168.0.23:3306/sbk";
 	private static final String USER = "sbk";
 	private static final String PASS = "1234";
 

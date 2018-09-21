@@ -1,5 +1,4 @@
 package kr.co.jboard2.controller;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,11 +22,9 @@ public class MainController extends HttpServlet{
 	@Override
 	public void init( ServletConfig config ) throws ServletException {
 		// 컨트롤러 초기화
-		
 		// commandURI.properties 파일 경로 추출
 		ServletContext ctx = config.getServletContext();
 		String path = ctx.getRealPath("/WEB-INF")+"/commandURI.properties";
-		
 		
 		// properties 객체 생성
 		// Map<String, String> map = new HashMap<>();
@@ -78,13 +75,11 @@ public class MainController extends HttpServlet{
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		requestProc(req, resp);
-	
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		requestProc(req, resp);
-	
 	}
 	
 	private void requestProc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -110,15 +105,8 @@ public class MainController extends HttpServlet{
 			out.print(json);
 			
 		}else {
-			
 			RequestDispatcher dispatcher = request.getRequestDispatcher(view);
 			dispatcher.forward(request, response);
-			
 		}
-		
 	}
-
-	
-	
-	
 }

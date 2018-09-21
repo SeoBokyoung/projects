@@ -7,6 +7,7 @@ import java.sql.Statement;
 
 import kr.co.jboard2.utils.DBConfig;
 import kr.co.jboard2.utils.SQL;
+import kr.co.jboard2.vo.MemberVO;
 import kr.co.jboard2.vo.TermsVO;
 
 public class MemberDAO {
@@ -23,9 +24,6 @@ public class MemberDAO {
 	private PreparedStatement psmt 	= null;
 	private Statement stmt 			= null;
 	private ResultSet rs 			= null;
-	
-	public void login() throws Exception {
-	}
 
 	public TermsVO terms() throws Exception {
 
@@ -48,15 +46,94 @@ public class MemberDAO {
 		return vo;
 	}
 
-	public void register() throws Exception {
+	public void register(MemberVO vo) throws Exception {
+		
+		conn = DBConfig.getConnection();
+		
+		// 3단계
+		psmt = conn.prepareStatement(SQL.INSERT_MEMBER);
+		psmt.setString(1, vo.getUid());
+		psmt.setString(2, vo.getPw());
+		psmt.setString(3, vo.getName());
+		psmt.setString(4, vo.getNick());
+		psmt.setString(5, vo.getEmail());
+		psmt.setString(6, vo.getHp());
+		psmt.setString(7, vo.getZip());
+		psmt.setString(8, vo.getAddr1());
+		psmt.setString(9, vo.getAddr2());
+		psmt.setString(10, vo.getRegip());
+		
+		// 4단계
+		psmt.executeUpdate();
+		
+		// 5단계
+		// 6단계
+		DBConfig.close(psmt);
+		DBConfig.close(conn);
+		
 	}
 
-	public int checkUser(String uid) throws Exception {
-		int result = 0;
-
+	public MemberVO login(String uid, String pw) throws Exception {
+	
 		conn = DBConfig.getConnection();
-		psmt = conn.prepareStatement(SQL.SELECT_CHECK_ID);
+		
+		// 3단계
+		psmt = conn.prepareStatement(SQL.SELECT_MEMBER_LOGIN);
 		psmt.setString(1, uid);
+		psmt.setString(2, pw);
+		
+		// 4단계
+		rs = psmt.executeQuery();
+		
+		// 5단계
+		MemberVO vo = null;
+		if(rs.next()) {
+			vo = new MemberVO();
+			
+			vo.setSeq(rs.getInt(1));
+			vo.setUid(rs.getString(2));
+			vo.setPw(rs.getString(3));
+			vo.setName(rs.getString(4));
+			vo.setNick(rs.getString(5));
+			vo.setEmail(rs.getString(6));
+			vo.setHp(rs.getString(7));
+			vo.setGrade(rs.getInt(8));
+			vo.setZip(rs.getString(9));
+			vo.setAddr1(rs.getString(10));
+			vo.setAddr2(rs.getString(11));
+			vo.setRegip(rs.getString(12));
+			vo.setRdate(rs.getString(13));
+			
+		}
+		
+		// 6단계
+		DBConfig.close(rs);
+		DBConfig.close(psmt);
+		DBConfig.close(conn);
+		
+		return vo;
+	}
+	
+	public int checkUser(String check, String value) throws Exception {
+		int result = 0;
+		
+		conn = DBConfig.getConnection();
+		
+		switch (check) {
+		case "uid":
+			psmt = conn.prepareStatement(SQL.SELECT_CHECK_UID);
+			break;
+		case "nick":
+			psmt = conn.prepareStatement(SQL.SELECT_CHECK_NICK);
+			break;
+		case "hp":
+			psmt = conn.prepareStatement(SQL.SELECT_CHECK_HP);
+			break;
+		case "email":
+			psmt = conn.prepareStatement(SQL.SELECT_CHECK_EMAIL);
+			break;
+		}
+		psmt.setString(1, value);
 		
 		rs = psmt.executeQuery();
 		
@@ -69,7 +146,6 @@ public class MemberDAO {
 		DBConfig.close(conn);
 		
 		return result;
-		
 		
 	}
 
